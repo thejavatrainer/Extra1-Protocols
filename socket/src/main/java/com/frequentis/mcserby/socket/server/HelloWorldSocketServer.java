@@ -14,19 +14,19 @@ public class HelloWorldSocketServer {
         new HelloWorldSocketServer().startServer(portNumber);
     }
 
-    public void startServer(int port){
+    public void startServer(int port) {
         EXECUTOR.execute(() -> this.doStartServer(port));
     }
 
     public void doStartServer(int port) {
         System.out.println("starting Socket Server on port " + port);
-        for(;;) {
-            try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            for (; ; ) {
                 Socket clientSocket = serverSocket.accept();
                 EXECUTOR.execute(new ClientHandler(clientSocket));
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
